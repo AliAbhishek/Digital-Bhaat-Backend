@@ -1,0 +1,32 @@
+service: digital-bhaat
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  environment:
+    NODE_ENV: ${opt:stage, 'development'}
+    MONGO_URI: ${env:MONGO_URI}
+
+functions:
+  app:
+    handler: handler.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: any
+
+package:
+  individually: true
+
+build:
+  esbuild: true
+  sourcemap: true
+  minify: false
+
+custom:
+  dotenv:
+    path: .env.${opt:stage, 'development'}
+
+plugins:
+  - serverless-offline
