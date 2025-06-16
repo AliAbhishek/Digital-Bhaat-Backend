@@ -11,6 +11,7 @@ provider:
 functions:
   app:
     handler: handler.handler
+    timeout: 30
     events:
       - httpApi:
           path: /{proxy+}
@@ -27,6 +28,9 @@ build:
 custom:
   dotenv:
     path: .env.${opt:stage, 'development'}
+  serverless-offline:
+    httpPort: 4000
+    lambdaTimeout: 30 # default is 6
 
 plugins:
   - serverless-offline

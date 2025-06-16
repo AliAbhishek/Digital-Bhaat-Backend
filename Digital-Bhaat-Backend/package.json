@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --ext ts --exec 'npx serverless offline start --stage development' --signal SIGTERM",
-    "start":"nodemon --ext ts --exec 'npx serverless offline start --stage production' --signal SIGTERM",
-    "deploy":"npx serverless deploy --stage production"
+    "dev": "nodemon",
+    "start": "npx serverless offline start --stage production ",
+    "deploy": "npx serverless deploy --stage production"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^24.0.0",
     "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
@@ -23,9 +24,11 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "serverless": "^4.17.0",
     "serverless-http": "^3.2.0",
-    "serverless-offline": "^14.4.0"
+    "serverless-offline": "^14.4.0",
+    "zod": "^3.25.63"
   }
 }

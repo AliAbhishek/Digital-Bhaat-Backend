@@ -1,0 +1,6 @@
+{
+  "watch": ["handler.ts", "."],
+  "ext": "ts,js,json",
+  "ignore": ["node_modules"],
+  "exec": "nodemon-restart.cmd"
+}
