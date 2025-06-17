@@ -40,7 +40,7 @@ const authController = {
                 res,
                 statusCodes.CREATED,
                 messages.registrationSuccess,
-                { userId: user._id,otp }
+                { userId: user._id, otp }
             );
         }
     },
@@ -62,7 +62,7 @@ const authController = {
                 res,
                 statusCodes.SUCCESS,
                 messages?.loginSuccessfull,
-                { userId: existingUser._id,otp }
+                { userId: existingUser._id, otp }
             );
         } else {
 
@@ -98,7 +98,7 @@ const authController = {
             res,
             statusCodes.SUCCESS,
             messages.otpVerifiedSuccessfully,
-            { userId: findUser._id, isPhoneNumberVerified: findUser.isPhoneNumberVerified,isProfileCompleted:findUser.isProfileCompleted, token }
+            { userId: findUser._id, isPhoneNumberVerified: findUser.isPhoneNumberVerified, isProfileCompleted: findUser.isProfileCompleted, token }
         );
 
     },
@@ -120,6 +120,22 @@ const authController = {
         // Send OTP logic goes here (SMS, email, etc.)
 
         return responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "OTP resent successfully", { otp }); // remove OTP in production
+    },
+
+    updateProfile: async (req: any, res: Response) => {
+        const { userId } = req.user;
+
+        let updatedUser = await authService.updateProfile(userId, req.body);
+        if (!updatedUser) {
+            throw new CustomError(statusCodes.NOT_FOUND, "User not found");
+        }
+
+        return responseHandlers.sucessResponse(
+            res,
+            statusCodes.SUCCESS,
+            messages.profileCreated,
+            { user: updatedUser }
+        );
     },
 
 }

@@ -1,7 +1,8 @@
 import { Router } from "express";
 import authController from "../../controller/app/auth.controller";
 import { validateZod } from "../../middlewares/zodValidator.middleware";
-import { loginSchema, signUpSchema, verifyOtpSchema } from "../../zodSchemas/authSchema.zod";
+import { loginSchema, profileSchema, signUpSchema, verifyOtpSchema } from "../../zodSchemas/authSchema.zod";
+import { requireAuth } from "../../middlewares/Authentication.middleware";
 
 
 
@@ -11,7 +12,13 @@ const routes = [
     { method: "post", path: "/login", handler: authController.login, middlewares: [validateZod(loginSchema)] },
     { method: "post", path: "/signup", handler: authController.signUp, middlewares: [validateZod(signUpSchema)] },
     { method: "post", path: "/verifyOTP", handler: authController.verifyOtp, middlewares: [validateZod(verifyOtpSchema)] },
-    { method: "post", path: "/resendOTP", handler: authController.resendOtp }
+    { method: "post", path: "/resendOTP", handler: authController.resendOtp },
+     {
+    method: "post",
+    path: "/updateProfile",
+    handler: authController.updateProfile,
+    middlewares: [requireAuth, validateZod(profileSchema)],
+  },
 
 ];
 
