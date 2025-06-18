@@ -7,6 +7,20 @@ provider:
   environment:
     NODE_ENV: ${opt:stage, 'development'}
     MONGO_URI: ${env:MONGO_URI}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowCredentials: false
 
 functions:
   app:
@@ -30,7 +44,7 @@ custom:
     path: .env.${opt:stage, 'development'}
   serverless-offline:
     httpPort: 4000
-    lambdaTimeout: 30 # default is 6
+    lambdaTimeout: 30
 
 plugins:
   - serverless-offline
