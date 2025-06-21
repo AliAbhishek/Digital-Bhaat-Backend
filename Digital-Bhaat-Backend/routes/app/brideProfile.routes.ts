@@ -3,10 +3,20 @@ import { validateZod } from "../../middlewares/zodValidator.middleware";
 import brideProfileController from "../../controller/app/brideProfile.controller";
 import { requireAuth } from "../../middlewares/Authentication.middleware";
 import { createBrideProfileSchema } from "../../zodSchemas/brideProfileSchema.zod";
+import { handler } from "../../handler";
+import { setUploadFolder, uploadToS3 } from "../../middlewares/uploadToS3.middleware";
+
 
 const brideProfileRouter = Router();
 
 const routes = [
+  {
+   method:"post",
+   path:"/aadharUpload",
+   handler:brideProfileController.uploadAadharImage,
+    middlewares: [requireAuth,setUploadFolder("aadhar"),uploadToS3],
+  
+  },
   {
     method: "post",
     path: "/createBrideProfile",

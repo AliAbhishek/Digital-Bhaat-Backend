@@ -7,6 +7,9 @@ provider:
   environment:
     NODE_ENV: ${opt:stage, 'development'}
     MONGO_URI: ${env:MONGO_URI}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
+    MONGO_ENC_KEY: ${env:MONGO_ENC_KEY}
+    MONGO_SIG_KEY: ${env:MONGO_SIG_KEY}
   httpApi:
     cors:
       allowedOrigins:

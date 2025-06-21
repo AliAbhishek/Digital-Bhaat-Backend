@@ -8,7 +8,8 @@ const messages = {
     otpVerifiedSuccessfully:"OTP verified successfully.",
     loginSuccessfull:"Welcome back.",
     messageForRegistration:"You are new to our platform, Please register first.",
-    alreadyRegister:"Your phone number is already registered with us, Please do a login."
+    alreadyRegister:"Your phone number is already registered with us, Please do a login.",
+    profileUpdated:"Your profile updated successfully."
 }
 
 export default messages

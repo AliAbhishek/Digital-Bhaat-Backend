@@ -13,7 +13,7 @@ const authService = {
     findUserByPhone: async (countryCode: string, phoneNumber: string) => {
         return await usersModel.findOne({ countryCode, phoneNumber });
     },
-     updateProfile: async (id: string, body: any) => {
+    updateProfile: async (id: string, body: any) => {
         return await usersModel.findByIdAndUpdate(id, {...body,isProfileCompleted: true}, { new: true,runValidators: true });
     }
 

@@ -3,6 +3,7 @@ import authController from "../../controller/app/auth.controller";
 import { validateZod } from "../../middlewares/zodValidator.middleware";
 import { loginSchema, profileSchema, signUpSchema, verifyOtpSchema } from "../../zodSchemas/authSchema.zod";
 import { requireAuth } from "../../middlewares/Authentication.middleware";
+import { uploadToS3 } from "../../middlewares/uploadToS3.middleware";
 
 
 
@@ -13,12 +14,18 @@ const routes = [
     { method: "post", path: "/signup", handler: authController.signUp, middlewares: [validateZod(signUpSchema)] },
     { method: "post", path: "/verifyOTP", handler: authController.verifyOtp, middlewares: [validateZod(verifyOtpSchema)] },
     { method: "post", path: "/resendOTP", handler: authController.resendOtp },
-     {
-    method: "post",
-    path: "/updateProfile",
-    handler: authController.updateProfile,
-    middlewares: [requireAuth, validateZod(profileSchema)],
-  },
+    {
+        method: "post",
+        path: "/uploadImagesToS3",
+        handler: authController.uploadImagesToS3,
+        middlewares: [requireAuth,uploadToS3],
+    },
+    {
+        method: "put",
+        path: "/updateProfile",
+        handler: authController.updateProfile,
+        middlewares: [requireAuth, validateZod(profileSchema)],
+    },
 
 ];
 

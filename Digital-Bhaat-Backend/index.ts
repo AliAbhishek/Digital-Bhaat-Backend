@@ -28,8 +28,6 @@ app.use((req, res, next): any => {
   next();
 });
 
-// app.use(bodyParser.json()); // ✅ Use this instead
-// app.use(express.urlencoded({ extended: true }));
 
 // Sample Route
 app.get("/api/hello", async (req:any, res:any) => {

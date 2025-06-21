@@ -1,11 +1,22 @@
-import {  Response } from "express";
+import { Response } from "express";
 import statusCodes from "../../utils/statusCode.utils";
 import brideProfileService from "../../services/app/brideProfile.service";
 import responseHandlers, {
   CustomError,
 } from "../../services/response/response.service";
+import { extractTextFromS3 } from "../../services/app/textract.service";
 
 const brideProfileController = {
+
+  uploadAadharImage: async (req: any, res: Response) => {
+    const { key, bucket } = req.s3File;
+
+
+    const extractedData = await extractTextFromS3(bucket, key);
+    return responseHandlers.sucessResponse(res, statusCodes.SUCCESS, 'Aadhar uploaded and extracted successfully', extractedData)
+
+  },
+
   createBrideProfile: async (req: any, res: Response) => {
     const userId = req.user.userId;
 
@@ -61,8 +72,8 @@ const brideProfileController = {
 
     const updatePayload: any = {};
     if (step == 2) {
-        updatePayload.brideDetails = req.body.brideDetails
-        updatePayload.brideAadharNumber=req.body.brideDetails.brideAadharNumber
+      updatePayload.brideDetails = req.body.brideDetails
+      updatePayload.brideAadharNumber = req.body.brideDetails.brideAadharNumber
     };
     if (step == 3) {
       updatePayload.familyIncome = req.body.familyIncome;

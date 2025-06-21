@@ -122,6 +122,17 @@ const authController = {
         return responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "OTP resent successfully", { otp }); // remove OTP in production
     },
 
+    uploadImagesToS3: async (req: any, res: Response) => {
+
+        const { url, key } = req.s3File
+
+        return responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Uploaded to S3", {
+            url,
+            key: key,
+
+        });
+    },
+
     updateProfile: async (req: any, res: Response) => {
         const { userId } = req.user;
 
@@ -133,7 +144,7 @@ const authController = {
         return responseHandlers.sucessResponse(
             res,
             statusCodes.SUCCESS,
-            messages.profileCreated,
+            messages.profileUpdated,
             { user: updatedUser }
         );
     },

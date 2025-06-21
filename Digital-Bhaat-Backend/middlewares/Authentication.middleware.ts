@@ -13,13 +13,18 @@ export const requireAuth = (req: any, res: Response, next: NextFunction) => {
     const token = authHeader.split(" ")[1];
     const decoded: any = verifyToken(token);
 
+
+
     if (!decoded) {
         throw new CustomError(statusCodes.UNAUTHORIZED, "Invalid or expired token")
 
     }
-
     // Attach user data to request
-    req.user.userId = decoded?.userID;
-    req.user.role = decoded?.role
+    // ✅ Initialize req.user if not already
+    
+    req.user = {
+        userId: decoded?.userId,
+        role: decoded?.role,
+    };
     next();
 };
