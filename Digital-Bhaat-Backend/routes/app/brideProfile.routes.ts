@@ -12,9 +12,9 @@ const brideProfileRouter = Router();
 const routes = [
   {
    method:"post",
-   path:"/aadharUpload",
-   handler:brideProfileController.uploadAadharImage,
-    middlewares: [requireAuth,setUploadFolder("aadhar"),uploadToS3],
+   path:"/familyIdUpload",
+   handler:brideProfileController.uploadFamilyIdImage,
+    middlewares: [requireAuth,setUploadFolder("familyId"),uploadToS3],
   
   },
   {

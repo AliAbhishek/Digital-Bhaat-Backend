@@ -4,13 +4,13 @@ import { addPresignedUrls } from "./s3.service";
 
 const brideProfileService = {
   findBrideProfile: async (id: string, userId: string) => {
-    let profile:any = await BrideProfileModel.findOne({
+    let profile: any = await BrideProfileModel.findOne({
       _id: id,
       profileCreatedBy: userId,
     })
     // Optional: convert to plain object after virtuals are resolved
     if (profile) { profile = profile.toObject({ virtuals: true }); }
-    
+
     const updateProfileWithSignedUrl = await addPresignedUrls(profile)
 
     return updateProfileWithSignedUrl
@@ -25,15 +25,20 @@ const brideProfileService = {
   },
 
   updateBrideProfile: async (id: string, userId: string, body: any) => {
-    const brideProfile = await BrideProfileModel.findOneAndUpdate(
-      {
-        _id: id,
-        profileCreatedBy: userId,
-      },
-      { $set: body },
-      { new: true }
-    );
+    
+    const brideProfile = await BrideProfileModel.findOne({
+      _id: id,
+      profileCreatedBy: userId,
+    });
+
+    if (!brideProfile) throw new Error("Profile not found");
+
+    Object.assign(brideProfile, body); // merges all fields
+    await brideProfile.save(); // triggers encryption
+
     return brideProfile;
+
+    // return brideProfile;
   },
 
   getAllBrideProfiles: async (userId: string) => {

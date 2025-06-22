@@ -6,9 +6,11 @@ import responseHandlers, {
 } from "../../services/response/response.service";
 import { extractTextFromS3 } from "../../services/app/textract.service";
 
+
+
 const brideProfileController = {
 
-  uploadAadharImage: async (req: any, res: Response) => {
+  uploadFamilyIdImage: async (req: any, res: Response) => {
     const { key, bucket } = req.s3File;
 
 
@@ -62,7 +64,7 @@ const brideProfileController = {
     // 🔒 Block editing if already submitted and under review or approved
     if (
       existingProfile.isProfileCompleted &&
-      ["Under Review", "Approved"].includes(existingProfile.profileStatus)
+      [ "Approved"].includes(existingProfile.profileStatus)
     ) {
       throw new CustomError(
         statusCodes.FORBIDDEN,
@@ -71,12 +73,17 @@ const brideProfileController = {
     }
 
     const updatePayload: any = {};
+    if(step==1){
+      updatePayload.guardianDetails= req.body.guardianDetails
+      updatePayload.fatherAadharNumber=req.body.fatherAadharNumber
+    }
     if (step == 2) {
       updatePayload.brideDetails = req.body.brideDetails
-      updatePayload.brideAadharNumber = req.body.brideDetails.brideAadharNumber
+      updatePayload.brideAadharNumber = req.body.brideAadharNumber
     };
     if (step == 3) {
-      updatePayload.familyIncome = req.body.familyIncome;
+      // updatePayload.familyIncome = req.body.familyIncome;
+      updatePayload.familyIdImage=req.body.familyIdImage
     }
     if (isFinalStep) {
       if (req.body.saveAsDraft) {
@@ -89,6 +96,7 @@ const brideProfileController = {
     }
 
     updatePayload.stepCompleted = step;
+  
 
     const updated = await brideProfileService.updateBrideProfile(
       profileId,

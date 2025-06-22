@@ -54,10 +54,14 @@ export const addPresignedUrls = async (profile: any) => {
     
   }
 
-//   if (profile?.brideDetails?.profileImage) {
-//     const key = extractKey(profile.brideDetails.profileImage);
-//     profile.brideProfileImageUrl = await generatePresignedUrl(key);
-//   }
+  if (profile?.brideDetails?.profileImage) {
+    const key = extractKey(profile.brideDetails.profileImage);
+    profile.brideProfileImageUrl = await generatePresignedUrl(key);
+  }
+  if (profile?.familyIdImage) {
+    const key = extractKey(profile?.familyIdImage);
+    profile.familyIdImageUrl = await generatePresignedUrl(key);
+  }
 
   return profile;
 };

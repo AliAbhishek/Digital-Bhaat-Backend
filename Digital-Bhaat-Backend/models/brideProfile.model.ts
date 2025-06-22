@@ -24,7 +24,7 @@ export interface IBrideProfile extends Document {
   brideDetails: {
     brideDOB: string;
     brideName: string;
-
+    age: string;
     bridePhoneNumber: string;
 
     brideDisability: boolean;
@@ -40,6 +40,7 @@ export interface IBrideProfile extends Document {
   };
   brideAadharNumber: string;
   familyIncome: number;
+  familyIdImage:string;
   stepCompleted: number;
   saveAsDraft: boolean;
   isProfileCompleted: boolean;
@@ -72,7 +73,7 @@ const brideProfileSchema = new mongoose.Schema<IBrideProfile>(
     brideDetails: {
       brideDOB: String,
       brideName: String,
-
+      age: String,
       bridePhoneNumber: String,
       brideDisability: Boolean,
       weddingDate: String,
@@ -83,10 +84,11 @@ const brideProfileSchema = new mongoose.Schema<IBrideProfile>(
       district: String,
       state: String,
       pincode: Number,
-      weddingVenue: String,
+      // weddingVenue: String,
     },
     brideAadharNumber: String,
     familyIncome: Number,
+    familyIdImage:String,
     stepCompleted: { type: Number, default: 0 },
     saveAsDraft: { type: Boolean, default: true },
     isProfileCompleted: { type: Boolean, default: false },

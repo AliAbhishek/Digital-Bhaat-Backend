@@ -14,7 +14,7 @@ const authController = {
     signUp: async (req: Request, res: Response) => {
         // await connectDB();
         const { countryCode, phoneNumber, role } = req.body;
-        console.log("Request body:", req.body);
+        
         const existingUser = await authService.findUserByPhone(countryCode, phoneNumber);
         // Generate OTP and expiry
         const { otp, otpExpiresIn } = await otpCreationAndExpiration();
