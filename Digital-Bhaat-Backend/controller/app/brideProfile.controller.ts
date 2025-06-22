@@ -19,9 +19,9 @@ const brideProfileController = {
 
   createBrideProfile: async (req: any, res: Response) => {
     const userId = req.user.userId;
-
     const newProfile = await brideProfileService.createBrideProfile({
       guardianDetails: req.body.guardianDetails,
+      fatherAadharNumber:req.body.fatherAadharNumber,
       stepCompleted: 1,
       profileCreatedBy: userId,
     });
@@ -145,7 +145,7 @@ const brideProfileController = {
       res,
       statusCodes.SUCCESS,
       "Profiles fetched successfully.",
-      { data: profile }
+     profile
     );
   },
 };

@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import encrypt from "mongoose-encryption";
 import Env from "../config/Env.config";
+import { generatePresignedUrl } from "../services/app/s3.service";
 
 export interface IBrideProfile extends Document {
   guardianDetails: {
@@ -130,6 +131,9 @@ brideProfileSchema
     if (!aadhar) return "";
     return "XXXX-XXXX-" + aadhar.slice(-4);
   });
+
+
+
 
 export const BrideProfileModel = mongoose.model<IBrideProfile>(
   "BrideProfile",

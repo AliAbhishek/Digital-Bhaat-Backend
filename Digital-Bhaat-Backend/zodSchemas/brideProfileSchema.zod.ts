@@ -2,23 +2,23 @@ import { z } from "zod";
 
 const addressSchema = z.object({
   street: z.string().min(1).optional(),
-  village: z.string().min(1).optional(),
+  village: z.string().min(1),
   postOffice: z.string().min(1),
   district: z.string().min(1),
   state: z.string().min(1),
-  pincode: z.number().min(100000).max(999999),
+  pincode: z.string(),
 });
 
 export const guardianDetailsSchema = z
   .object({
     fatherName: z.string().min(1),
-    fatherAadharNumber: z.string().length(12), // assuming Aadhaar length
+    // fatherAadharNumber: z.string().length(12), // assuming Aadhaar length
     fatherPhoneNumber: z.string().length(10),
-    fatherAadhaarImage: z.string().url(),
+    // fatherAadhaarImage: z.string().url(),
     guardianRelation: z.string().min(1),
     guardianDisability: z.boolean(),
     isSingleParent: z.boolean(),
-    profileImage: z.string().url(),
+    profileImage: z.string().url().optional(),
     ...addressSchema.shape,
   })
   .strict();
@@ -43,7 +43,8 @@ export const createBrideProfileSchema = z
     brideDetails: brideDetailsSchema.optional(),
     guardianDetails: guardianDetailsSchema.optional(),
     familyIncome: z.number().min(0).optional(),
-    step: z.number().min(1).max(4),
+    step: z.number().min(1).max(4).optional(),
     saveAsDraft: z.boolean().optional(),
+    fatherAadharNumber: z.string().length(12).optional()
   })
   .strict();
