@@ -84,6 +84,7 @@ const brideProfileController = {
     if (step == 3) {
       // updatePayload.familyIncome = req.body.familyIncome;
       updatePayload.familyIdImage=req.body.familyIdImage
+      updatePayload.rationCardImage=req.body.rationCardImage
     }
     if (isFinalStep) {
       if (req.body.saveAsDraft) {
@@ -131,7 +132,7 @@ const brideProfileController = {
       res,
       statusCodes.SUCCESS,
       "Profiles fetched successfully.",
-      { data: profiles }
+      profiles 
     );
   },
 

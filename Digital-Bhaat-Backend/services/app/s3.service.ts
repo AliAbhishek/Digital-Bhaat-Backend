@@ -63,6 +63,16 @@ export const addPresignedUrls = async (profile: any) => {
     profile.familyIdImageUrl = await generatePresignedUrl(key);
   }
 
+  if (profile?.rationCardImage) {
+    const key = extractKey(profile?.rationCardImage);
+    profile.rationCardImageUrl = await generatePresignedUrl(key);
+  }
+
+  if(profile?.profileImage){
+    const key = extractKey(profile?.profileImage);
+    profile.profileImageUrl = await generatePresignedUrl(key);
+  }
+
   return profile;
 };
 

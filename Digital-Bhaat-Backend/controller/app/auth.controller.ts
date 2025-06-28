@@ -149,6 +149,22 @@ const authController = {
         );
     },
 
+      getUserProfile: async (req: any, res: Response) => {
+        const { userId } = req.user;
+
+        let updatedUser = await authService.findUserById(userId);
+        if (!updatedUser) {
+            throw new CustomError(statusCodes.NOT_FOUND, "User not found");
+        }
+
+        return responseHandlers.sucessResponse(
+            res,
+            statusCodes.SUCCESS,
+            messages.profileUpdated,
+            updatedUser
+        );
+    },
+
 }
 
 export default authController

@@ -18,7 +18,7 @@ export const guardianDetailsSchema = z
     guardianRelation: z.string().min(1),
     guardianDisability: z.boolean(),
     isSingleParent: z.boolean(),
-    profileImage: z.string().url().optional(),
+     profileImage: z.string().url().nullable().optional(),
     ...addressSchema.shape,
   })
   .strict();
@@ -34,7 +34,7 @@ export const brideDetailsSchema = z
     // brideAadhaarImage: z.string().url(),
     brideDisability: z.boolean(),
     weddingDate: z.string(),
-    profileImage: z.string().url(),
+    profileImage: z.string().url().nullable().optional(),
     // weddingVenue: z.string().min(1),
     ...addressSchema.shape,
   })
@@ -49,7 +49,8 @@ export const createBrideProfileSchema = z
     saveAsDraft: z.boolean().optional(),
     fatherAadharNumber: z.string().length(12).optional(),
     brideAadharNumber: z.string().length(12).optional(),
-    familyIdImage:z.string().optional(),
+    familyIdImage:z.string().nullable().optional(),
+    rationCardImage:z.string().nullable().optional()
     
   })
   .strict();

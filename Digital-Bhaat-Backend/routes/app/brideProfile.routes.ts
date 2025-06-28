@@ -5,17 +5,25 @@ import { requireAuth } from "../../middlewares/Authentication.middleware";
 import { createBrideProfileSchema } from "../../zodSchemas/brideProfileSchema.zod";
 import { handler } from "../../handler";
 import { setUploadFolder, uploadToS3 } from "../../middlewares/uploadToS3.middleware";
+import authController from "../../controller/app/auth.controller";
 
 
 const brideProfileRouter = Router();
 
 const routes = [
   {
-   method:"post",
-   path:"/familyIdUpload",
-   handler:brideProfileController.uploadFamilyIdImage,
-    middlewares: [requireAuth,setUploadFolder("familyId"),uploadToS3],
-  
+    method: "post",
+    path: "/familyIdUpload",
+    handler: authController.uploadImagesToS3,
+    middlewares: [requireAuth, setUploadFolder("familyId"), uploadToS3],
+
+  },
+  {
+    method: "post",
+    path: "/rationCardUpload",
+    handler: authController.uploadImagesToS3,
+    middlewares: [requireAuth, setUploadFolder("rationCard"), uploadToS3],
+
   },
   {
     method: "post",

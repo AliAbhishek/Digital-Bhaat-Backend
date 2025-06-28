@@ -41,6 +41,7 @@ export interface IBrideProfile extends Document {
   brideAadharNumber: string;
   familyIncome: number;
   familyIdImage:string;
+  rationCardImage:string;
   stepCompleted: number;
   saveAsDraft: boolean;
   isProfileCompleted: boolean;
@@ -89,6 +90,7 @@ const brideProfileSchema = new mongoose.Schema<IBrideProfile>(
     brideAadharNumber: String,
     familyIncome: Number,
     familyIdImage:String,
+    rationCardImage:String,
     stepCompleted: { type: Number, default: 0 },
     saveAsDraft: { type: Boolean, default: true },
     isProfileCompleted: { type: Boolean, default: false },

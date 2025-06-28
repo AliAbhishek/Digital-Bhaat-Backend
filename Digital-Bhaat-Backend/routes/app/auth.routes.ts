@@ -26,6 +26,12 @@ const routes = [
         handler: authController.updateProfile,
         middlewares: [requireAuth, validateZod(profileSchema)],
     },
+    {
+        method: "get",
+        path: "/getProfile",
+        handler: authController.getUserProfile,
+        middlewares: [requireAuth],
+    },
 
 ];
 
