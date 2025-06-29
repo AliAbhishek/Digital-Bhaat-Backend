@@ -4,6 +4,7 @@ import Env from "./config/Env.config";
 import responseHandlers from "./services/response/response.service";
 import globalRouter from "./routes/app/indec";
 import { globalRateLimiter } from "./middlewares/rateLImiting.middleware";
+import globalAdminRouter from "./routes/admin";
 
 
 const app = express();
@@ -40,6 +41,7 @@ app.get("/api/hello", async (req:any, res:any) => {
   await connectDB(); // Only once on app startup
 })();
 app.use("/api",globalRouter)
+app.use("/api/admin",globalAdminRouter)
 app.use(responseHandlers.globalErrorHandler);
 
 export default app;

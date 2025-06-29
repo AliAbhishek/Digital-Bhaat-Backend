@@ -23,7 +23,8 @@ export interface IUser extends Document {
     };
     consentGiven: boolean;
     isAnonymousDonation: boolean;
-    isProfileCompleted: boolean
+    isProfileCompleted: boolean;
+    isDeleteByAdmin:boolean
 }
 
 const UserSchema: Schema = new Schema<IUser>(
@@ -101,7 +102,8 @@ const UserSchema: Schema = new Schema<IUser>(
             type: Boolean,
             default: false
 
-        }
+        },
+        isDeleteByAdmin:{type:Boolean,default:false}
     },
     {
         timestamps: true,
