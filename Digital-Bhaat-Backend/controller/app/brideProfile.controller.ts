@@ -138,12 +138,12 @@ const brideProfileController = {
 
   // ✅ Get profile by ID
   getBrideProfileById: async (req: any, res: Response) => {
-    const userId = req.user.userId;
+    // const userId = req.user.userId;
     const profileId = req.params.id;
-
+// console.log(userId,profileId)
     const profile = await brideProfileService.findBrideProfile(
       profileId,
-      userId
+      // userId
     );
 
     if (!profile) {

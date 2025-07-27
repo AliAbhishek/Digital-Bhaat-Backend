@@ -11,6 +11,7 @@ const s3 = new S3();
 const bucketName = Env.S3_BUCKET_NAME!
 
 export const setUploadFolder = (folderName: string) => {
+  
   return (req: any, _res: Response, next: NextFunction) => {
     req.uploadFolder = folderName;
     next();
@@ -20,8 +21,10 @@ export const setUploadFolder = (folderName: string) => {
 export const uploadToS3 = (req: any, res: Response, next: NextFunction) => {
   // const userId = req.headers['x-user-id'] as string; // Or from req.user if using auth middleware
 
-  const userId = req.user.userId
+  const userId = req.user?.userId || "fromAdmin"
   const folder = req.uploadFolder || 'others';
+
+ 
 
   if (!userId) throw new CustomError(statusCodes.BAD_REQUEST, "Missing user ID")
 

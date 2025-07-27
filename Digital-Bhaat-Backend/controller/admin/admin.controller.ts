@@ -1,5 +1,6 @@
 import Env from "../../config/Env.config";
 import adminModel from "../../models/admin.model"
+import Advertiser from "../../models/ads.model"
 import { BrideProfileModel } from "../../models/brideProfile.model";
 import usersModel from "../../models/users.model";
 import responseHandlers from "../../services/response/response.service";
@@ -8,6 +9,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 import { generateToken } from "../../utils/jwt.utils";
+import { addPresignedUrls, generatePresignedUrl } from "../../services/app/s3.service";
 dotenv.config();
 
 const adminController = {
@@ -44,7 +46,7 @@ const adminController = {
         if (!isMatch) {
             return responseHandlers.failureResponse(res, statusCodes.BAD_REQUEST, "Invalid credentials")
         }
-        
+
         // 3. Generate JWT token
         let token = await generateToken({ userId: admin._id, role: "admin" })
 
@@ -72,19 +74,40 @@ const adminController = {
         // Fetch total count for pagination
         const total = await usersModel.countDocuments(query);
 
-        // Fetch paginated users
+        // Fetch users with pagination
         const users = await usersModel
             .find(query)
             .skip((pageNumber - 1) * limitNumber)
             .limit(limitNumber)
-            .sort({ createdAt: -1 }); // latest first
+            .sort({ createdAt: -1 });
 
-        return responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Users fetched successfully", {
-            total,
-            page: pageNumber,
-            limit: limitNumber,
-            users,
-        });
+        // Add signed URL for each profileImage
+        const updatedUsers = await Promise.all(
+            users.map(async (user) => {
+                if (user.profileImage) {
+                    const signedUrl = await generatePresignedUrl(user.profileImage); // your custom S3 function
+                    return {
+                        ...user.toObject(),
+                        profileImageUrl: signedUrl,
+                    };
+                }
+                return user.toObject();
+            })
+        );
+
+        // Send response
+        return responseHandlers.sucessResponse(
+            res,
+            statusCodes.SUCCESS,
+            "Users fetched successfully",
+            {
+                total,
+                page: pageNumber,
+                limit: limitNumber,
+                users: updatedUsers,
+            }
+        );
+
     },
 
     updateUser: async (req: any, res: any) => {
@@ -126,9 +149,50 @@ const adminController = {
 
     getBrideById: async (req: any, res: any) => {
         const userId = req.params.id;
-        const users = await BrideProfileModel.findById(userId);
-        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Brides fetched successfully", users)
+        let profile: any = await BrideProfileModel.findById(userId);
+        // Optional: convert to plain object after virtuals are resolved
+        if (profile) { profile = profile.toObject({ virtuals: true }); }
+        // Add signed URL for each profileImage
+
+
+
+        const updatedProfile = await addPresignedUrls(profile); // your custom S3 function
+
+
+
+
+
+
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Brides fetched successfully", updatedProfile)
     },
+
+    addAdvertiser: async (req: any, res: any) => {
+        const created = await Advertiser.create({ ...req.body });
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads data added successfully", created)
+    },
+
+    editAdvertiser: async (req: any, res: any) => {
+        const { id } = req.params
+        const created = await Advertiser.findByIdAndUpdate(id, { $set: { ...req.body } }, { new: true });
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads data updated successfully", created)
+    },
+
+    getAdvertisers: async (req: any, res: any) => {
+
+        const ads = await Advertiser.find()
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads fetched successfully", ads)
+    },
+
+    deleteAdvertiser: async (req: any, res: any) => {
+        const { id } = req.params
+        const deleted = await Advertiser.findByIdAndDelete(id)
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads data deleted successfully", deleted)
+    },
+
+    
+
+
+
 
 }
 

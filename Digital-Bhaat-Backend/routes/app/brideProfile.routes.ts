@@ -3,7 +3,6 @@ import { validateZod } from "../../middlewares/zodValidator.middleware";
 import brideProfileController from "../../controller/app/brideProfile.controller";
 import { requireAuth } from "../../middlewares/Authentication.middleware";
 import { createBrideProfileSchema } from "../../zodSchemas/brideProfileSchema.zod";
-import { handler } from "../../handler";
 import { setUploadFolder, uploadToS3 } from "../../middlewares/uploadToS3.middleware";
 import authController from "../../controller/app/auth.controller";
 

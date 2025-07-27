@@ -3,10 +3,10 @@ import { BrideProfileModel } from "../../models/brideProfile.model";
 import { addPresignedUrls } from "./s3.service";
 
 const brideProfileService = {
-  findBrideProfile: async (id: string, userId: string) => {
+  findBrideProfile: async (id: string) => {
     let profile: any = await BrideProfileModel.findOne({
       _id: id,
-      profileCreatedBy: userId,
+      // profileCreatedBy: userId,
     })
     // Optional: convert to plain object after virtuals are resolved
     if (profile) { profile = profile.toObject({ virtuals: true }); }

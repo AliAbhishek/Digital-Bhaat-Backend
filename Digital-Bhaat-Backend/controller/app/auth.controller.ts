@@ -98,7 +98,7 @@ const authController = {
             res,
             statusCodes.SUCCESS,
             messages.otpVerifiedSuccessfully,
-            { userId: findUser._id, isPhoneNumberVerified: findUser.isPhoneNumberVerified, isProfileCompleted: findUser.isProfileCompleted, token }
+            { userId: findUser._id, isPhoneNumberVerified: findUser.isPhoneNumberVerified, isProfileCompleted: findUser.isProfileCompleted,role:findUser.role, token }
         );
 
     },
@@ -123,6 +123,8 @@ const authController = {
     },
 
     uploadImagesToS3: async (req: any, res: Response) => {
+
+        console.log(req.s3File,"file")
 
         const { url, key } = req.s3File
 
