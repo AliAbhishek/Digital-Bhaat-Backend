@@ -5,6 +5,7 @@ import responseHandlers, {
   CustomError,
 } from "../../services/response/response.service";
 import { extractTextFromS3 } from "../../services/app/textract.service";
+import { Wallet } from "../../models/wallet.model";
 
 
 
@@ -145,10 +146,13 @@ const brideProfileController = {
       profileId,
       // userId
     );
+    const brideWallet = await Wallet.findOne({userId:profileId})
 
     if (!profile) {
       throw new CustomError(statusCodes.NOT_FOUND, "No profiles found.");
     }
+
+    profile.brideWallet=brideWallet?.balance || 0
 
     return responseHandlers.sucessResponse(
       res,

@@ -10,9 +10,9 @@ const donationRouter = Router()
 
 const routes = [
     { method: "post", path: "/donateViaPlaying", handler: DonationController.DonateViaPlaying, middlewares: [requireAuth] },
-    { method: "get", path: "/getUserTransaction", handler: DonationController.userTransaction, middlewares: [requireAuth] },
-   
-   
+    { method: "get", path: "/getDonorTransaction", handler: DonationController.donorTransaction, middlewares: [requireAuth] },
+    { method: "get", path: "/brideTransaction/:brideId", handler: DonationController.brideTransaction, middlewares: [requireAuth] },
+
 ];
 
 // Loop through all route definitions and register them

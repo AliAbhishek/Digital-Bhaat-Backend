@@ -6,6 +6,7 @@ import { Wallet } from "../../models/wallet.model";
 import GamificationDonation from "../../models/gamificationDonation.model";
 import transactionModel from "../../models/transaction.model";
 import statusCodes from "../../utils/statusCode.utils";
+import { BrideProfileModel } from "../../models/brideProfile.model";
 
 
 
@@ -64,6 +65,13 @@ const DonationController = {
                 { $inc: { balance: amount } },
                 { new: true, upsert: true, session }
             );
+            // 👇 Add this new step
+            await BrideProfileModel.findOneAndUpdate(
+                { _id: brideId },
+                { $inc: { "collectedAmount": amount } },
+                { session }
+            );
+
 
             // Create GamificationDonation record
             let donation: any = await GamificationDonation.create([{
@@ -110,17 +118,39 @@ const DonationController = {
         );
     },
 
-    userTransaction: async (req: any, res: any) => {
+    donorTransaction: async (req: any, res: any) => {
         const userId = req.user.userId;
-        let userWallet= await Wallet.findOne({userId})
-        let userTransactions = await transactionModel.find({ transactionDoneBy: userId }).populate({ path: "transactionDoneTo", select: "fullName email" })
+        // let userWallet= await Wallet.findOne({userId})
+        let userTransactions = await transactionModel.find({ transactionDoneBy: userId })
+            .populate({ path: "transactionDoneTo", select: "brideDetails.brideName", options: { toJSON: { virtuals: false }, toObject: { virtuals: false } } })
+            .populate({ path: "adsOrganisationId", select: "name website" }).populate({ path: "csrOrganisationId", select: "name" }).sort({ createdAt: -1 })
 
 
         return responseHandlers.sucessResponse(
             res,
             statusCodes.SUCCESS,
             `Transactions fetched successfully`,
-            {userWallet,userTransactions}
+            { userTransactions }
+        );
+
+
+    },
+
+    brideTransaction: async (req: any, res: any) => {
+        // const userId = req.user.userId;
+        const { brideId } = req.params
+        // console.log(brideId,"bbb")
+        let userWallet = await Wallet.findOne({ userId: brideId })
+        let userTransactions = await transactionModel.find({ transactionDoneTo: brideId })
+            .populate({ path: "transactionDoneBy", select: "fullName email", options: { toJSON: { virtuals: false }, toObject: { virtuals: false } } })
+            .populate({ path: "adsOrganisationId", select: "name website" }).populate({ path: "csrOrganisationId", select: "name" }).sort({ createdAt: -1 })
+
+
+        return responseHandlers.sucessResponse(
+            res,
+            statusCodes.SUCCESS,
+            `Transactions fetched successfully`,
+            { userWallet: userWallet || 0, userTransactions }
         );
 
 
