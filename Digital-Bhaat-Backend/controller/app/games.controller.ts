@@ -12,6 +12,35 @@ const gamesController = {
     fetchAndStoreGames: async (req: any, res: Response) => {
 
         const search = req.query.search?.toString().trim() || "";
+    //          const xmlData = fs.readFileSync("data/games.json", "utf-8");
+    //     const result = await parseStringPromise(xmlData);
+    //     const items = result?.rss?.channel?.[0]?.item || [];
+    //     const limitedItems = items.slice(0, 100);
+
+    //     const games = limitedItems.map((item: any) => (
+    //         {
+    //         gameId: item.id?.[0],
+    //         title: item.title?.[0],
+    //         description: item.description?.[0],
+    //         category: item.category?.[0],
+    //         thumb: item.thumb?.[0],
+    //         url: item.url?.[0],
+    //     }
+    // ));
+
+    // // console.log(limitedItems[0])
+
+
+
+    //     const existingIds = new Set(
+    //         (await gamesModel.find({}, "id")).map((game) => game.id)
+    //     );
+
+    //     const newGames = games.filter((game: any) => !existingIds.has(game.id));
+
+    //     if (newGames.length > 0) {
+    //         await gamesModel.insertMany(newGames);
+    //     }
 
         const query = search
             ? { title: { $regex: new RegExp(search, "i") } }
@@ -82,7 +111,7 @@ const gamesController = {
 
     getFavGames: async (req: any, res: any) => {
         const userId = req.user.userId;
-        let findFav = await favouriteGamesModel.find({ userId })
+        let findFav = await favouriteGamesModel.find({ userId }).sort({createdAt:-1}).populate("gameId")
 
         return responseHandlers.sucessResponse(
             res,
@@ -92,7 +121,11 @@ const gamesController = {
         );
 
 
-    }
+    },
+
+   
+
+
 
 }
 

@@ -15,6 +15,7 @@ const GameSchema = new mongoose.Schema({
     thumb: String,
     category: String,
     url: String,
-});
+},{        timestamps: true,
+    });
 
 export default mongoose.model<IGames>("GamesModel",GameSchema)

@@ -26,7 +26,7 @@ const providerServices = {
             .skip(skip)
             .limit(limit)
             .sort({ createdAt: -1 });
-        console.log(brides, "brides")
+        // console.log(brides, "brides")
         // Add presigned URLs
         const updatedUsers = await Promise.all(
             brides?.map(async (user: any) => {
@@ -35,7 +35,7 @@ const providerServices = {
             }
             )
         );
-        console.log(updatedUsers, "upp")
+        // console.log(updatedUsers, "upp")
 
         const total = await BrideProfileModel.countDocuments(query);
 

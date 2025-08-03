@@ -9,6 +9,7 @@ const adsRoutes = Router()
 
 const routes = [
     { method: "get", path: "/getAdvertisers", handler: adminController.getAdvertisers },
+    { method: "get", path: "/getAdvertisersById/:id", handler: adminController.getAdvertisersById },
     { method: "post", path: "/addAdvertiser", handler: adminController.addAdvertiser },
     { method: "put", path: "/editAdvertiser/:id", handler: adminController.editAdvertiser },
     { method: "delete", path: "/deleteAdvertiser/:id", handler: adminController.deleteAdvertiser },

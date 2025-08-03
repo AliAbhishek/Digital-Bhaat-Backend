@@ -85,11 +85,12 @@ const adminController = {
         const updatedUsers = await Promise.all(
             users.map(async (user) => {
                 if (user.profileImage) {
-                    const signedUrl = await generatePresignedUrl(user.profileImage); // your custom S3 function
-                    return {
-                        ...user.toObject(),
-                        profileImageUrl: signedUrl,
-                    };
+                    const updatedUser = await addPresignedUrls(user.toObject()); // your custom S3 function
+                    // return {
+                    //     ...user.toObject(),
+                    //     profileImageUrl: signedUrl,
+                    // };
+                    return updatedUser
                 }
                 return user.toObject();
             })
@@ -179,8 +180,25 @@ const adminController = {
 
     getAdvertisers: async (req: any, res: any) => {
 
-        const ads = await Advertiser.find()
-        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads fetched successfully", ads)
+        const ads = await Advertiser.find().sort({createdAt:-1})
+
+        const updatedAds = await Promise.all(
+            ads.map(async (ad) => {
+                if (ad.logoUrl) {
+                    const updatedad = await addPresignedUrls(ad.toObject()); // your custom S3 function
+                    return updatedad
+                }
+                return ad.toObject();
+            })
+        );
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads fetched successfully", updatedAds)
+    },
+
+    getAdvertisersById: async (req: any, res: any) => {
+        const {id} =req.params
+        const ads:any = await Advertiser.findById(id)
+          const updatedProfile = await addPresignedUrls(ads.toObject({ virtuals: true }));
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ad fetched successfully", updatedProfile)
     },
 
     deleteAdvertiser: async (req: any, res: any) => {

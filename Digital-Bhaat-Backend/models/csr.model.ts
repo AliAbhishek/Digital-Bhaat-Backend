@@ -13,7 +13,7 @@ export interface IAdvertiser extends Document {
 
 }
 
-const AdvertiserSchema = new Schema<IAdvertiser>(
+const CsrSchema = new Schema<IAdvertiser>(
     {
         name: { type: String, required: true },
         logoUrl: { type: String },
@@ -27,7 +27,7 @@ const AdvertiserSchema = new Schema<IAdvertiser>(
 );
 
 
-AdvertiserSchema.pre("save", function (next) {
+CsrSchema.pre("save", function (next) {
   if (this.isModified("total") && !this.isModified("balance")) {
     this.balance = (this.balance ||0) + this.total;
   }
@@ -35,4 +35,4 @@ AdvertiserSchema.pre("save", function (next) {
 });
 
 
-export default mongoose.model<IAdvertiser>("Advertiser", AdvertiserSchema);
+export default mongoose.model<IAdvertiser>("Csr", CsrSchema);

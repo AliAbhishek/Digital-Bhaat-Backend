@@ -73,6 +73,13 @@ export const addPresignedUrls = async (profile: any) => {
     profile.profileImageUrl = await generatePresignedUrl(key);
   }
 
+  if(profile?.logoUrl){
+    const key = extractKey(profile?.logoUrl);
+    profile.adslogoUrl = await generatePresignedUrl(key);
+    
+    
+  }
+
  
 
   return profile;
