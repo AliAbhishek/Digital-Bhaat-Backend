@@ -4,7 +4,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IAdvertiser extends Document {
     name: string;
-    logoUrl: string;
+    // logoUrl: string;
     website?: string;
     contactEmail?: string;
     balance: number;
@@ -16,7 +16,7 @@ export interface IAdvertiser extends Document {
 const CsrSchema = new Schema<IAdvertiser>(
     {
         name: { type: String, required: true },
-        logoUrl: { type: String },
+        // logoUrl: { type: String },
         website: String,
         contactEmail: String,
         balance: { type: Number, default: 0 },

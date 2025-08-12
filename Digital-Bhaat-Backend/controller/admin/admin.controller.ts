@@ -10,6 +10,8 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 import { generateToken } from "../../utils/jwt.utils";
 import { addPresignedUrls, generatePresignedUrl } from "../../services/app/s3.service";
+import csrModel from "../../models/csr.model";
+import transactionModel from "../../models/transaction.model";
 dotenv.config();
 
 const adminController = {
@@ -180,7 +182,7 @@ const adminController = {
 
     getAdvertisers: async (req: any, res: any) => {
 
-        const ads = await Advertiser.find().sort({createdAt:-1})
+        const ads = await Advertiser.find().sort({ createdAt: -1 })
 
         const updatedAds = await Promise.all(
             ads.map(async (ad) => {
@@ -195,9 +197,9 @@ const adminController = {
     },
 
     getAdvertisersById: async (req: any, res: any) => {
-        const {id} =req.params
-        const ads:any = await Advertiser.findById(id)
-          const updatedProfile = await addPresignedUrls(ads.toObject({ virtuals: true }));
+        const { id } = req.params
+        const ads: any = await Advertiser.findById(id)
+        const updatedProfile = await addPresignedUrls(ads.toObject({ virtuals: true }));
         responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ad fetched successfully", updatedProfile)
     },
 
@@ -206,8 +208,64 @@ const adminController = {
         const deleted = await Advertiser.findByIdAndDelete(id)
         responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads data deleted successfully", deleted)
     },
+    addCSR: async (req: any, res: any) => {
+        const created = await csrModel.create({ ...req.body });
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "CSR data added successfully", created)
+    },
 
-    
+    editCSR: async (req: any, res: any) => {
+        const { id } = req.params
+        const created = await csrModel.findByIdAndUpdate(id, { $set: { ...req.body } }, { new: true });
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "CSR data updated successfully", created)
+    },
+
+    getCSR: async (req: any, res: any) => {
+
+        const ads = await csrModel.find().sort({ createdAt: -1 })
+
+        // const updatedAds = await Promise.all(
+        //     ads.map(async (ad) => {
+        //         if (ad.logoUrl) {
+        //             const updatedad = await addPresignedUrls(ad.toObject()); // your custom S3 function
+        //             return updatedad
+        //         }
+        //         return ad.toObject();
+        //     })
+        // );
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "CSR fetched successfully", ads)
+    },
+
+    getCSRById: async (req: any, res: any) => {
+        const { id } = req.params
+        const ads: any = await csrModel.findById(id)
+        //   const updatedProfile = await addPresignedUrls(ads.toObject({ virtuals: true }));
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "CSR fetched successfully", ads)
+    },
+
+    deleteCSR: async (req: any, res: any) => {
+        const { id } = req.params
+        const deleted = await csrModel.findByIdAndDelete(id)
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "CSR data deleted successfully", deleted)
+    },
+
+    viewAdsTxn: async (req: any, res: any) => {
+        const { id } = req.params
+        const txnDetails = await transactionModel
+            .find({ adsOrganisationId: id })
+            .populate({ path: "transactionDoneBy", select: "fullName email" })
+            .populate({ path: "transactionDoneTo", select: "brideDetails.brideName guardianDetails.fatherName" });
+
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Ads txn fetched successfully", txnDetails)
+    },
+
+    viewCsrTxn: async (req: any, res: any) => {
+        const { id } = req.params
+        const txnDetails = await csrModel.find({ adsOrganisationId: id }).populate({ path: "transactionDoneBy", select: "fullName email" })
+            .populate({ path: "transactionDoneTo", select: "brideDetails.brideName guardianDetails.fatherName" });
+        responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Csr txn fetched successfully", txnDetails)
+    },
+
+
 
 
 

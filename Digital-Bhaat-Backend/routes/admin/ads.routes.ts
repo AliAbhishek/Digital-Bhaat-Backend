@@ -20,6 +20,7 @@ const routes = [
         middlewares: [ setUploadFolder("adsLogo"), uploadToS3],
     
       },
+      { method: "get", path: "/getAdvertisersTxnById/:id", handler: adminController.viewAdsTxn },
 
 ]
 
