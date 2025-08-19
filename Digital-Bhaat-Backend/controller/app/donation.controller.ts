@@ -143,7 +143,7 @@ const DonationController = {
         let userWallet = await Wallet.findOne({ userId: brideId })
         let userTransactions = await transactionModel.find({ transactionDoneTo: brideId })
             .populate({ path: "transactionDoneBy", select: "fullName email", options: { toJSON: { virtuals: false }, toObject: { virtuals: false } } })
-            .populate({ path: "adsOrganisationId", select: "name website" }).populate({ path: "csrOrganisationId", select: "name" }).sort({ createdAt: -1 })
+            .populate({ path: "adsOrganisationId", select: "name website" }).populate({ path: "csrOrganisationId", select: "name website" }).sort({ createdAt: -1 })
 
 
         return responseHandlers.sucessResponse(

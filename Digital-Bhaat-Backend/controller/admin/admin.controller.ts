@@ -260,7 +260,7 @@ const adminController = {
 
     viewCsrTxn: async (req: any, res: any) => {
         const { id } = req.params
-        const txnDetails = await csrModel.find({ adsOrganisationId: id }).populate({ path: "transactionDoneBy", select: "fullName email" })
+        const txnDetails = await transactionModel.find({ csrOrganisationId: id }).populate({ path: "transactionDoneBy", select: "fullName email" })
             .populate({ path: "transactionDoneTo", select: "brideDetails.brideName guardianDetails.fatherName" });
         responseHandlers.sucessResponse(res, statusCodes.SUCCESS, "Csr txn fetched successfully", txnDetails)
     },

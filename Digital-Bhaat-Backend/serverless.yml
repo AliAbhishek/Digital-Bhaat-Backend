@@ -10,6 +10,8 @@ provider:
     S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
     MONGO_ENC_KEY: ${env:MONGO_ENC_KEY}
     MONGO_SIG_KEY: ${env:MONGO_SIG_KEY}
+    RAZORPAY_KEY_ID: ${env:RAZORPAY_KEY_ID}
+    RAZORPAY_KEY_SECRET:  ${env:RAZORPAY_KEY_SECRET}
   httpApi:
     cors:
       allowedOrigins:

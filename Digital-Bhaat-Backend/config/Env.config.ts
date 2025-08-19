@@ -9,7 +9,9 @@ const Env = {
     JWT_SECRET :process.env.JWT_SECRET,
     MONGO_ENC_KEY:process.env.MONGO_ENC_KEY,
     MONGO_SIG_KEY:process.env.MONGO_SIG_KEY,
-    S3_BUCKET_NAME:process.env.S3_BUCKET_NAME
+    S3_BUCKET_NAME:process.env.S3_BUCKET_NAME,
+    RAZORPAY_KEY_ID:process.env.RAZORPAY_KEY_ID,
+    RAZORPAY_KEY_SECRET:process.env.RAZORPAY_KEY_SECRET
    
     
 };
